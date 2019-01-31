@@ -24,7 +24,9 @@
             {% with messages = get_flashed_messages() %}
               {% if messages %}
                 {% for message in messages %}
-                  {{ message }}<br>
+                  <p class="hero-sub-title">
+                    {{ message }}
+                  </p>
                 {% endfor %}
               {% endif %}
             {% endwith %}

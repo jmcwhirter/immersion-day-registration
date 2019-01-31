@@ -22,14 +22,13 @@ def home():
     form = RegisterForm()
 
     if form.validate_on_submit():
-        flash('Login requested for name {}, email {}'.format(
-            form.name.data, form.email.data))
         table.put_item(
            Item={
                 'name': form.name.data,
                 'email': form.email.data
             }
         )
+        flash('Got it!')
         return redirect('/')
 
     return render_template('register.html', title='Register', form=form)

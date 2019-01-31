@@ -1,4 +1,4 @@
-__Prerequisites:__
+### Prerequisites:
 - Python 2.7
   - Mac: `brew install python@2`
 - AWS CLI
@@ -7,7 +7,7 @@ __Prerequisites:__
   - Mac: `brew install jq`
 
 
-__Setup:__
+### Setup:
 1. Get your Python 2.7 environment created
 ``` bash
 # Create virtual environment (or deal with the pain)
@@ -37,7 +37,7 @@ zappa deploy dev
    https://WHATEVER_YOUR_ENDPOINT_IS.amazonaws.com/dev/
 
 
-__Usage:__
+### Usage:
 1. Query DynamoDB for e-mails. This will output as
 ``` bash
 aws dynamodb scan --table-name registrations --query 'Items[*].email' --output text
@@ -47,14 +47,12 @@ aws dynamodb scan --table-name registrations --query 'Items[*].email' --output t
    https://www.qwiklabs.com/my_account/token_allocation_groups
 
 
-__Clean-up:__
+### Clean-up:
 1. Delete DynamoDB records
 ``` bash
 # Delete the whole table (cheaper for large datasets; creating new table adds time)
 aws dynamodb delete-table --table-name registrations
-
-# ORRRR
-
+# OR
 # Delete all items from the table (more expensive for large datasets; quicker total time to execute)
 aws dynamodb scan --table-name registrations --query 'Items[*]' | jq --compact-output '.[]' | tr '\n' '\0' | xargs -0 -t -I keyItem aws dynamodb delete-item --table-name registrations --key=keyItem
 ```
@@ -62,3 +60,30 @@ aws dynamodb scan --table-name registrations --query 'Items[*]' | jq --compact-o
 ``` bash
 zappa undeploy dev
 ```
+
+
+### Change hero image:
+1. Download ImageMagick
+  - Mac: `brew install imagemagick`
+2. Generate hero images
+``` bash
+source util/env/bin/activate
+python util/generate_heros.py -l /path/to/image.jpg
+deactivate
+```
+  The images will be stored in website/static
+3. Update the CSS
+``` bash
+sed -i 's/chicago/<your_file_name>/' website/static/style.css
+# Or on Mac
+sed -i '' "s/chicago/<your_file_name/g" website/static/style.css
+```
+4. Deploy the app
+``` bash
+cd website
+source env/bin/activate
+flask run --reload
+```
+5. Initialize the app (which does upload AND change the style in prod...)
+
+   http://localhost:5000/init

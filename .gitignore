@@ -1,4 +1,8 @@
 *.pyc
 env/
 
+.DS_Store
+
+*.jpg
+
 zappa_settings.json

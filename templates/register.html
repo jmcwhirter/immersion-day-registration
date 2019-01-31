@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+        <style>
+            .hero #cafe {
+                width: 100%;
+                display: inline-block;
+                vertical-align: middle;
+                font: 0/0 serif;
+                text-shadow: none;
+                color: transparent;
+                background-size: 100%;
+                background-position: 50% 50%;
+                background-repeat: no-repeat;
+            }
+            .hero #cafe .inner {
+                padding-top: 63.35%; /* height/width of image */
+                display: block;
+                height: 0;
+            }
+            /* default screen, non-retina */
+            .hero #cafe { background-image: url({{url_for('static', filename='chicago.jpg')}}); }
+        </style>
+    </head>
+    <body>
+        <div class="hero">
+            <span id="cafe" role="img" aria-label="Coffee and croissant.">
+                <span class="inner">
+                </span>
+            </span>
+        {% block content %}
+            <h1>Register</h1>
+            <form action="" method="post" novalidate>
+                {{ form.hidden_tag() }}
+                <p>
+                    {{ form.name.label }}<br>
+                    {{ form.name(size=32) }}
+                </p>
+                <p>
+                    {{ form.email.label }}<br>
+                    {{ form.email(size=32) }}
+                </p>
+                <p>{{ form.submit() }}</p>
+            </form>
+        {% endblock %}
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+          <ul>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+        {% endwith %}
+        </div>
+    </body>
+</html>

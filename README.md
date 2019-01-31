@@ -1,9 +1,17 @@
+__Prerequisites:__
+- Python 2.7
+  - Mac: `brew install python@2`
+- AWS CLI
+  - Mac: `brew install awscli`
+- JQ library
+  - Mac: `brew install jq`
+
 
 __Setup:__
 1. Get your Python 2.7 environment created
 ``` bash
 # Create virtual environment (or deal with the pain)
-python -m virtualenv env
+python2 -m virtualenv env
 # Activate virtual environment
 source env/bin/activate
 # Install PIP requirements
@@ -40,9 +48,15 @@ aws dynamodb scan --table-name registrations --query 'Items[*].email' --output t
 
 
 __Clean-up:__
-1. Delete DynamoDB table
+1. Delete DynamoDB records
 ``` bash
+# Delete the whole table (cheaper for large datasets; creating new table adds time)
 aws dynamodb delete-table --table-name registrations
+
+# ORRRR
+
+# Delete all items from the table (more expensive for large datasets; quicker total time to execute)
+aws dynamodb scan --table-name registrations --query 'Items[*]' | jq --compact-output '.[]' | tr '\n' '\0' | xargs -0 -t -I keyItem aws dynamodb delete-item --table-name registrations --key=keyItem
 ```
 2. Undeploy Flask app
 ``` bash

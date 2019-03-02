@@ -5,6 +5,9 @@
   - Mac: `brew install awscli`
 - JQ library
   - Mac: `brew install jq`
+- Zappa is configured to deploy to US-East-2
+  - `aws configure set default.region us-east-2` OR
+  - Add `--region us-east-2` to your DynamoDB command
 
 
 ### Setup:

@@ -29,14 +29,14 @@ def home():
             }
         )
         flash('Got it!')
-        return redirect('/')
+        return redirect('/dev')
 
     return render_template('register.html', title='Register', form=form)
 
 @app.route('/init', methods=['GET'])
 def init():
     flask_s3.create_all(app)
-    return redirect('/')
+    return redirect('/dev')
 
 if __name__ == "__main__":
     app.run(debug=True)
